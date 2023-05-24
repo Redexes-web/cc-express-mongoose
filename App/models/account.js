@@ -10,6 +10,7 @@ const accountSchema = new Schema({
 	customName: {
 		type: String,
 		required: [true, 'Veillez saisir le nom du compte'],
+        unique: [true, 'Ce nom de compte existe déjà'],
 	},
 	lastUpdated: {
 		type: Date,

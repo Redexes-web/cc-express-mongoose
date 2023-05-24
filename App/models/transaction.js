@@ -6,7 +6,8 @@ const { Schema, model } = require('mongoose');
 const transactionSchema = new Schema({
     label: {
       type: String,
-      required: [true, 'Vous devez saisir un libellé']
+      required: [true, 'Vous devez saisir un libellé'],
+      unique: [true, 'Ce libellé existe déjà'],
       
     },
     type: {
