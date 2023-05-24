@@ -6,7 +6,7 @@ const swaggerUi = require('swagger-ui-express');
 const morgan = require('morgan');
 const fs = require('fs');
 const helmet = require('helmet');
-
+const db = require('./App/models/db');
 const swaggerDocument = require('./swagger.json');
 const logFilePath = './logs.log';
 

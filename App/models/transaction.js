@@ -6,38 +6,43 @@ const { Schema, model } = require('mongoose');
 const transactionSchema = new Schema({
     label: {
       type: String,
-      required: true,
+      required: [true, 'Vous devez saisir un libellé']
+      
     },
     type: {
       type: String,
       enum: ['debit', 'credit'],
-      required: true,
+      required: [true, 'Vous devez saisir un type de transaction']
     },
     amount: {
       type: Number,
-      required: true,
+      required: [true, 'Vous devez saisir un montant']
     },
     paymentDate: {
       type: Date,
-      required: true,
+      required: [true, 'Vous devez saisir une date de paiement']
     },
     paymentMethod: {
       type: String,
-      required: true,
+      required: [true, 'Vous devez saisir une méthode de paiement'],
+      enum: {
+        values: ['cash', 'card', 'transfer', 'check'],
+        message: 'La méthode de paiement doit être cash, card, transfer ou check',
+      }
     },
     isChecked: {
       type: Boolean,
-      required: true,
+      required: [true, 'Vous devez saisir un statut de transaction']
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      required: true,
+      required: [true, 'Vous devez saisir une catégorie']
     },
     accountId: {
       type: Schema.Types.ObjectId,
       ref: 'Account',
-      required: true,
+      required: [true, 'Vous devez saisir un compte']
     },
   });
 

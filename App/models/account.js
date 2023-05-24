@@ -5,20 +5,20 @@ const { Schema, model } = require('mongoose');
 const accountSchema = new Schema({
 	bankName: {
 		type: String,
-		required: true,
+		required: [true, 'Veillez saisir le nom de la banque'],
 	},
 	customName: {
 		type: String,
-		required: true,
+		required: [true, 'Veillez saisir le nom du compte'],
 	},
 	lastUpdated: {
 		type: Date,
-		required: true,
+		required: [true, 'Veillez saisir la date de mise à jour'],
 	},
 	userId: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
-		required: true,
+		required: [true, 'Veillez saisir un utilisateur'],
 	},
 });
 
