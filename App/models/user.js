@@ -1,27 +1,34 @@
 'use strict';
 
 const { Schema, model } = require('mongoose');
-const { encryptEmail, decryptEmail } = require('../utils/crypto.js');
+const uniqueValidator = require('mongoose-unique-validator');
 
 const userSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'Le prénom ne peut pas être vide'],
-    },
-    email: {
-      type: String,
-      required: [true, "L'email ne peut pas être vide"],
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: [true, 'Le mot de passe ne peut pas être vide'],
-    },
-  },
-  { timestamps: true }
+	{
+		name: {
+			type: String,
+			required: [true, 'Le nom ne peut pas être vide'],
+		},
+		email: {
+			type: String,
+			required: [true, "L'email ne peut pas être vide"],
+			match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "L'email est invalide"],
+			unique: true,
+		},
+		password: {
+			type: String,
+			required: [true, 'Le mot de passe ne peut pas être vide'],
+			match: [
+				/^(?=.*[A-Z])(?=.*[\d!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+				'Le mot de passe doit contenir au moins 8 caractères dont au moins 1 chiffre et une majuscule',
+			],
+		},
+	},
+	{ timestamps: true }
 );
 
-const User = model('User', userSchema);
+userSchema.plugin(uniqueValidator);
 
-module.exports = User;
+const UserModel = model('User', userSchema);
+
+module.exports = UserModel;

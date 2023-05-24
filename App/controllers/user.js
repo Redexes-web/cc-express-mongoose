@@ -1,25 +1,32 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
-const { setUserLinks } = require('../utils/linkSetter');
+const User = require('../models/user');
 const process = require('process');
 
 exports.signup = async (req, res) => {
 	try {
-		const user = await User.create({
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		const user = new User({
 			...req.body,
-			password: await bcrypt.hash(req.body.password, 10),
+			password: hashedPassword,
 		});
-        setUserLinks(user);
+
+		const validationError = user.validateSync();
+		if (validationError) {
+			throw new Error(validationError.message);
+		}
+
+		const savedUser = await user.save();
 		res.status(201).json({
-			...user.dataValues,
+			...savedUser._doc,
 			password: undefined,
 			createdAt: undefined,
 			updatedAt: undefined,
+			__v: undefined,
 		});
 	} catch (error) {
 		console.error(error);
-		res.status(500).send('Error create user');
+		res.status(500).send('Erreur de validation: ' + error.message);
 	}
 };
 
@@ -28,8 +35,7 @@ exports.login = async (req, res) => {
 
 	try {
 		// Find user in database using decrypted email
-		const user = await User.findOneByEmail(email);
-
+		const user = await User.findOne({ email: email });
 		if (!user) {
 			return res.status(401).json({ error: 'User Not found' });
 		}
@@ -45,14 +51,13 @@ exports.login = async (req, res) => {
 		const token = jwt.sign({ userId: user.id }, process.env.TOKEN_SECRET, {
 			expiresIn: '24h',
 		});
-        setUserLinks(user);
 		res.json({
 			user: {
-				...user.dataValues,
-				email: decryptEmail(user.email),
-                password: undefined,
-                createdAt: undefined,
-                updatedAt: undefined,
+				...user._doc,
+				password: undefined,
+				createdAt: undefined,
+				updatedAt: undefined,
+				__v: undefined,
 			},
 			token,
 		});
