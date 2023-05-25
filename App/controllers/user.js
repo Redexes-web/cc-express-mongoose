@@ -18,8 +18,6 @@ exports.signup = async (req, res) => {
 		res.status(201).json({
 			...savedUser._doc,
 			password: undefined,
-			createdAt: undefined,
-			updatedAt: undefined,
 			__v: undefined,
 		});
 	} catch (error) {
@@ -53,8 +51,6 @@ exports.login = async (req, res) => {
 			user: {
 				...user._doc,
 				password: undefined,
-				createdAt: undefined,
-				updatedAt: undefined,
 				__v: undefined,
 			},
 			token,
