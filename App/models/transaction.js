@@ -7,7 +7,8 @@ const transactionSchema = new Schema({
     label: {
       type: String,
       required: [true, 'Vous devez saisir un libellé'],
-      unique: [true, 'Ce libellé existe déjà'],
+        minlength: [3, 'Le libellé doit avoir au moins 2 caractères'],
+        maxlength: [50, 'Le libellé doit avoir au maximum 50 caractères'],
       
     },
     type: {

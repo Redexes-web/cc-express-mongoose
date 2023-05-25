@@ -2,6 +2,7 @@
 
 const { Schema, model } = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const bcrypt = require('bcrypt');
 
 const userSchema = new Schema(
 	{
@@ -27,6 +28,12 @@ const userSchema = new Schema(
 	{ timestamps: true }
 );
 
+userSchema.pre('save', function (next) {
+  if (this.isModified('password')) {
+    this.password = bcrypt.hashSync(this.password, 10);
+  }
+  next();
+});
 userSchema.plugin(uniqueValidator);
 
 const UserModel = model('User', userSchema);
