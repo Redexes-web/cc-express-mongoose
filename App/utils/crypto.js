@@ -11,7 +11,6 @@ if (!IV) {
 	throw new Error('Encryption IV is not defined.');
 }
 function encryptEmail(email) {
-    console.log(email)
 	const encrypted = CryptoJS.AES.encrypt(email, ENCRYPTION_SECRET, {
 		mode: CryptoJS.mode.ECB,
         padding: CryptoJS.pad.Pkcs7,
