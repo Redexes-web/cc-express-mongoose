@@ -28,12 +28,15 @@ const userSchema = new Schema(
 	{ timestamps: true }
 );
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    this.password = bcrypt.hashSync(this.password, 10);
+    this.password = await bcrypt.hash(this.password, 10);
   }
+  // deal with lastUpdated
+  this.lastUpdated = Date.now();
   next();
 });
+
 userSchema.plugin(uniqueValidator);
 
 const UserModel = model('User', userSchema);

@@ -22,6 +22,11 @@ const accountSchema = new Schema({
 		required: [true, 'Veillez saisir un utilisateur'],
 	},
 });
+// deal with lastUpdated
+accountSchema.pre('save', function (next) {
+	this.lastUpdated = Date.now();
+	next();
+});
 
 const Account = model('Account', accountSchema);
 
