@@ -27,7 +27,10 @@ accountSchema.pre('save', function (next) {
 	this.lastUpdated = Date.now();
 	next();
 });
-
+accountSchema.pre('findOneAndUpdate', function (next) {
+	this.lastUpdated = Date.now();
+	next();
+});
 const Account = model('Account', accountSchema);
 
 module.exports = Account;
