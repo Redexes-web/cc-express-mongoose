@@ -4,87 +4,86 @@ exports.create = async (req, res) => {
 	try {
 		const userId = req.auth.userId;
 
-		const account = new Account({
+		const category = new Category({
 			...req.body,
 			userId: userId,
 		});
 
-		const validationError = account.validateSync();
+		const validationError = category.validateSync();
 		if (validationError) {
 			throw new Error(validationError.message);
 		}
 
-		const savedAccount = await account.save();
-		res.status(201).json(savedAccount);
+		const savedCategory = await category.save();
+		res.status(201).json(savedCategory);
 	} catch (error) {
 		console.error(error);
-		res.status(500).send('Erreur de création du compte : ' + error.message);
+		res.status(500).send('Erreur de création de la Categorie : ' + error.message);
 	}
 };
 
 exports.get = async (req, res) => {
 	try {
-		const accountId = req.params.id;
+		const categoryId = req.params.id;
 		const userId = req.auth.userId;
 
-		const account = await Account.findOne({ _id: accountId, userId: userId });
-		if (!account) {
-			return res.status(404).json({ error: 'Compte non trouvé' });
+		const category = await Category.findOne({ _id: categoryId, userId: userId });
+		if (!category) {
+			return res.status(404).json({ error: 'Categorie non trouvé' });
 		}
 
-		res.json(account);
+		res.json(category);
 	} catch (error) {
 		console.error(error);
 		res
 			.status(500)
-			.send('Erreur lors de la récupération du compte : ' + error.message);
+			.send('Erreur lors de la récupération de la Categorie : ' + error.message);
 	}
 };
 
 exports.update = async (req, res) => {
 	try {
-		const accountId = req.params.id;
+		const categoryId = req.params.id;
 		const userId = req.auth.userId;
 
-		const updatedAccount = await Account.findOneAndUpdate(
-			{ _id: accountId, userId: userId },
+		const updatedCategory = await Category.findOneAndUpdate(
+			{ _id: categoryId, userId: userId },
 			req.body,
 			{ new: true }
 		);
 
-		if (!updatedAccount) {
-			return res.status(404).json({ error: 'Compte non trouvé' });
+		if (!updatedCategory) {
+			return res.status(404).json({ error: 'Categorie non trouvé' });
 		}
 
-		res.json(updatedAccount);
+		res.json(updatedCategory);
 	} catch (error) {
 		console.error(error);
 		res
 			.status(500)
-			.send('Erreur lors de la mise à jour du compte : ' + error.message);
+			.send('Erreur lors de la mise à jour de la Categorie : ' + error.message);
 	}
 };
 
-// Delete an account
 exports.delete = async (req, res) => {
-    try {
-		const accountId = req.params.id;
+	try {
+		const categoryId = req.params.id;
 		const userId = req.auth.userId;
 
-		const deletedAccount = await Account.findOneAndDelete({
-			_id: accountId,
+		const deletedCategory = await Category.findOneAndDelete({
+			_id: categoryId,
 			userId: userId,
 		});
 
-		if (!deletedAccount) {
-			return res.status(404).json({ error: 'Compte non trouvé' });
+		if (!deletedCategory) {
+			return res.status(404).json({ error: 'Categorie non trouvé' });
 		}
 
-		res.json({ message: 'Compte supprimé avec succès' });
+		res.json({ message: 'Categorie supprimé avec succès' });
 	} catch (error) {
 		console.error(error);
 		res
 			.status(500)
-			.send('Erreur lors de la suppression du compte : ' + error.message);
+			.send('Erreur lors de la suppression de la Categorie : ' + error.message);
 	}
 };

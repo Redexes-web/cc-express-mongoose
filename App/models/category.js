@@ -7,7 +7,13 @@ const categorySchema = new Schema({
 		type: String,
 		required: [true, 'Vous devez saisir un nom de catégorie'],
 	},
+	userId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+		required: [true, 'Vous devez être connecté pour créer une catégorie'],
+	},
 });
+
 
 const Category = model('Category', categorySchema);
 
