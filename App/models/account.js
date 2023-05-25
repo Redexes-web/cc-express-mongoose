@@ -10,7 +10,7 @@ const accountSchema = new Schema({
 	customName: {
 		type: String,
 		required: [true, 'Veillez saisir le nom du compte'],
-        maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
+		maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
 	},
 	lastUpdated: {
 		type: Date,
@@ -21,6 +21,21 @@ const accountSchema = new Schema({
 		ref: 'User',
 		required: [true, 'Veillez saisir un utilisateur'],
 	},
+});
+
+accountSchema.post('findOne', function (result, next) {
+	if (!result) {
+		const error = new Error('Compte non trouvé');
+		error.status = 404;
+		return next(error);
+	}
+	if (result.userId.toString() !== this.getFilter().userId.toString()) {
+		const error = new Error("Vous n'êtes pas autorisé à accéder à ce compte");
+		error.status = 403;
+		return next(error);
+	}
+
+	next();
 });
 
 const Account = model('Account', accountSchema);
