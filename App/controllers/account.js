@@ -41,7 +41,7 @@ exports.get = async (req, res) => {
 	}
 };
 
-router.put('/:id', async (req, res) => {
+exports.update = async (req, res) => {
 	try {
 		const accountId = req.params.id;
 		const userId = req.auth.userId;
@@ -63,10 +63,10 @@ router.put('/:id', async (req, res) => {
 			.status(500)
 			.send('Erreur lors de la mise à jour du compte : ' + error.message);
 	}
-});
+};
 
 // Delete an account
-router.delete('/:id', async (req, res) => {
+exports.delete = async (req, res) => {
 	try {
 		const accountId = req.params.id;
 		const userId = req.auth.userId;
@@ -87,4 +87,4 @@ router.delete('/:id', async (req, res) => {
 			.status(500)
 			.send('Erreur lors de la suppression du compte : ' + error.message);
 	}
-});
+};
