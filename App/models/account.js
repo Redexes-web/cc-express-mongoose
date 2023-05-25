@@ -13,6 +13,7 @@ const accountSchema = new Schema({
         maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
 	},
 	lastUpdated: {
+		//datetime
 		type: Date,
 		required: [true, 'Veillez saisir la date de mise à jour'],
 	},
@@ -22,15 +23,14 @@ const accountSchema = new Schema({
 		required: [true, 'Veillez saisir un utilisateur'],
 	},
 });
-// deal with lastUpdated
-accountSchema.pre('save', function (next) {
-	this.lastUpdated = Date.now();
-	next();
-});
-accountSchema.pre('findOneAndUpdate', function (next) {
-	this.lastUpdated = Date.now();
-	next();
-});
+	accountSchema.pre('save', async function (next) {
+		this.lastUpdated = Date.now();
+		next();
+	});
+	accountSchema.pre('findOneAndUpdate', function (next) {
+		this._update.lastUpdated = Date.now();
+		next();
+	  });
 const Account = model('Account', accountSchema);
 
 module.exports = Account;

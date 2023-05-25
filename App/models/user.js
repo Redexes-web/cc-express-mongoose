@@ -37,6 +37,13 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
+userSchema.pre('findOneAndUpdate', function (next) {
+	  if (this._update.password) {
+		this._update.password = bcrypt.hashSync(this._update.password, 10);
+	  }
+	  this._update.lastUpdated = Date.now();
+	  next();
+	});
 userSchema.plugin(uniqueValidator);
 
 const UserModel = model('User', userSchema);

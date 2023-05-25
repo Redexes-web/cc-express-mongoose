@@ -43,8 +43,7 @@ exports.update = async (req, res) => {
 
 		const updatedAccount = await Account.findOneAndUpdate(
 			{ _id: accountId, userId: userId },
-			req.body,
-			{ new: true }
+			req.body
 		);
 
 		if (!updatedAccount) {
