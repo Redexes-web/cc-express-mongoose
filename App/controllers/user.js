@@ -5,10 +5,8 @@ const process = require('process');
 
 exports.signup = async (req, res) => {
 	try {
-		const hashedPassword = await bcrypt.hash(req.body.password, 10);
 		const user = new User({
 			...req.body,
-			password: hashedPassword,
 		});
 
 		const validationError = user.validateSync();

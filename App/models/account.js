@@ -10,7 +10,7 @@ const accountSchema = new Schema({
 	customName: {
 		type: String,
 		required: [true, 'Veillez saisir le nom du compte'],
-        unique: [true, 'Ce nom de compte existe déjà'],
+        maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
 	},
 	lastUpdated: {
 		type: Date,
