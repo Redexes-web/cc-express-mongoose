@@ -9,11 +9,6 @@ exports.signup = async (req, res) => {
 			...req.body,
 		});
 
-		const validationError = user.validateSync();
-		if (validationError) {
-			throw new Error(validationError.message);
-		}
-
 		const savedUser = await user.save();
 		res.status(201).json({
 			...savedUser._doc,

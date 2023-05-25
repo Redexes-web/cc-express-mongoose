@@ -9,11 +9,6 @@ exports.create = async (req, res) => {
 			userId: userId,
 		});
 
-		const validationError = account.validateSync();
-		if (validationError) {
-			throw new Error(validationError.message);
-		}
-
 		const savedAccount = await account.save();
 		res.status(201).json(savedAccount);
 	} catch (error) {

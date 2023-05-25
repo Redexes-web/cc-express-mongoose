@@ -9,11 +9,6 @@ exports.create = async (req, res) => {
 			userId: userId,
 		});
 
-		const validationError = category.validateSync();
-		if (validationError) {
-			throw new Error(validationError.message);
-		}
-
 		const savedCategory = await category.save();
 		res.status(201).json(savedCategory);
 	} catch (error) {
