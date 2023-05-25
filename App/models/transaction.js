@@ -34,6 +34,7 @@ const transactionSchema = new Schema({
     },
     isChecked: {
       type: Boolean,
+      default: false,
       required: [true, 'Vous devez saisir un statut de transaction']
     },
     category: {
