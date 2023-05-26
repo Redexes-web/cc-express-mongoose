@@ -1,6 +1,7 @@
 'use strict';
 
 const { Schema, model } = require('mongoose');
+const Transaction = require('./transaction');
 
 const accountSchema = new Schema({
 	bankName: {
@@ -10,7 +11,7 @@ const accountSchema = new Schema({
 	customName: {
 		type: String,
 		required: [true, 'Veillez saisir le nom du compte'],
-        maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
+		maxlength: [50, 'Le nom du compte doit avoir au maximum 50 caractères'],
 	},
 	lastUpdated: {
 		//datetime
@@ -22,15 +23,22 @@ const accountSchema = new Schema({
 		ref: 'User',
 		required: [true, 'Veillez saisir un utilisateur'],
 	},
+	transactions: [
+		{
+			type: Schema.Types.ObjectId,
+			ref: 'Transaction',
+		},
+	],
 });
-	accountSchema.pre('save', async function (next) {
-		this.lastUpdated = Date.now();
-		next();
-	});
-	accountSchema.pre('findOneAndUpdate', function (next) {
-		this._update.lastUpdated = Date.now();
-		next();
-	  });
+accountSchema.pre('save', async function (next) {
+	this.lastUpdated = Date.now();
+	next();
+});
+accountSchema.pre('findOneAndUpdate', function (next) {
+	this._update.lastUpdated = Date.now();
+	next();
+});
+
 const Account = model('Account', accountSchema);
 
 module.exports = Account;

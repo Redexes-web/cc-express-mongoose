@@ -1,5 +1,5 @@
 const Account = require('../models/account');
-
+const Transaction = require('../models/transaction');
 exports.create = async (req, res) => {
 	try {
 		const userId = req.auth.userId;
@@ -21,8 +21,8 @@ exports.get = async (req, res) => {
 	try {
 		const accountId = req.params.id;
 		const userId = req.auth.userId;
-
-		const account = await Account.findOne({ _id: accountId, userId: userId });
+    //findOne and populate linked transactions
+		const account = await Account.findOne({ _id: accountId, userId: userId }).populate('transactions');
 		if (!account) {
 			return res.status(404).json({ error: 'Compte non trouvé' });
 		}
