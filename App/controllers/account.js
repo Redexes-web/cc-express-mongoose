@@ -64,6 +64,11 @@ exports.delete = async (req, res) => {
 	try {
 		const accountId = req.params.id;
 		const userId = req.auth.userId;
+    //delete account and linked transactions
+    const deletedTransactions = await Transaction.deleteMany({
+      accountId: accountId,
+      userId: userId,
+    });
 
 		const deletedAccount = await Account.findOneAndDelete({
 			_id: accountId,
