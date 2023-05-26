@@ -21,8 +21,7 @@ exports.get = async (req, res) => {
 	try {
 		const accountId = req.params.id;
 		const userId = req.auth.userId;
-    //findOne and populate linked transactions
-		const account = await Account.findOne({ _id: accountId, userId: userId }).populate('transactions');
+		const account = await Account.findOne({ _id: accountId, userId: userId }).populate('transactions').exec();
 		if (!account) {
 			return res.status(404).json({ error: 'Compte non trouvé' });
 		}
